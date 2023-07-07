@@ -1,54 +1,37 @@
-import { Card, Page, Layout, TextContainer, Text } from "@shopify/polaris";
-import { TitleBar } from "@shopify/app-bridge-react";
-import { useTranslation } from "react-i18next";
+import {
+	Card,
+	Page,
+	Layout,
+	TextContainer,
+	Text,
+	FormLayout,
+	TextField,
+} from '@shopify/polaris';
+import {TitleBar, useNavigate} from '@shopify/app-bridge-react';
+import {useState} from 'react';
 
 export default function PageName() {
-  const { t } = useTranslation();
-  return (
-    <Page>
-      <TitleBar
-        title={t("PageName.title")}
-        primaryAction={{
-          content: t("PageName.primaryAction"),
-          onAction: () => console.log("Primary action"),
-        }}
-        secondaryActions={[
-          {
-            content: t("PageName.secondaryAction"),
-            onAction: () => console.log("Secondary action"),
-          },
-        ]}
-      />
-      <Layout>
-        <Layout.Section>
-          <Card sectioned>
-            <Text variant="headingMd" as="h2">
-              {t("PageName.heading")}
-            </Text>
-            <TextContainer>
-              <p>{t("PageName.body")}</p>
-            </TextContainer>
-          </Card>
-          <Card sectioned>
-            <Text variant="headingMd" as="h2">
-              {t("PageName.heading")}
-            </Text>
-            <TextContainer>
-              <p>{t("PageName.body")}</p>
-            </TextContainer>
-          </Card>
-        </Layout.Section>
-        <Layout.Section secondary>
-          <Card sectioned>
-            <Text variant="headingMd" as="h2">
-              {t("PageName.heading")}
-            </Text>
-            <TextContainer>
-              <p>{t("PageName.body")}</p>
-            </TextContainer>
-          </Card>
-        </Layout.Section>
-      </Layout>
-    </Page>
-  );
+	const navigate = useNavigate();
+	const [userName, setUserName] = useState(localStorage.getItem('name'));
+	const [email, setEmail] = useState(localStorage.getItem('email'));
+
+	if (userName === null || email === null) {
+		navigate('/');
+	}
+
+	return (
+		<Page
+			title="User Details"
+			primaryAction={{content: 'HomePage', onAction: () => navigate('/')}}
+		>
+			<Layout>
+				<Layout.Section>
+					<FormLayout>
+						<TextField value={userName} disabled></TextField>
+						<TextField value={email} disabled></TextField>
+					</FormLayout>
+				</Layout.Section>
+			</Layout>
+		</Page>
+	);
 }

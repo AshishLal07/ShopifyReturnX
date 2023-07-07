@@ -82,22 +82,3 @@ export function ProductsCard() {
 		</>
 	);
 }
-
-// const {
-//   data,
-//   refetch: refetchProductCount,
-//   isLoading: isLoadingCount,
-//   isRefetching: isRefetchingCount,
-// } = useAppQuery({
-//   url: "/api/products/count",
-//   reactQueryOptions: {
-//     onSuccess: () => {
-//       setIsLoading(false);
-//     },
-//   },
-// });
-{
-	/* <Text variant="bodyMd" as="p" fontWeight="semibold">
-{isLoadingCount ? "-" : data.count} */
-}
-// </Text>

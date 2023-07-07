@@ -4,44 +4,48 @@ import {
 	FormLayout,
 	TextField,
 	LegacyCard,
+	Toast,
+	Frame,
 } from '@shopify/polaris';
 
 import {ProductsCard, ProductList} from '../components';
 import {useAppQuery} from '../hooks';
 
-import {useState} from 'react';
-import {Toast} from '@shopify/app-bridge-react';
+import {useCallback, useState} from 'react';
+import {useNavigate} from '@shopify/app-bridge-react';
 
 export default function HomePage() {
-	const {data, isLoading, refetch, isRefetching} = useAppQuery({
-		url: '/api/products',
-	});
 	const [userName, setUserName] = useState('');
 	const [email, setEmail] = useState('');
 	const [showToast, setShowToast] = useState(false);
+	const navigate = useNavigate();
 
-	const toastMarkup = showToast ? (
-		<Toast
-			content="Added User Successfully"
-			onDismiss={setShowToast(false)}
-			duration={4000}
-		></Toast>
-	) : (
-		''
-	);
+	const {data, isLoading, refetch, isRefetching} = useAppQuery({
+		url: '/api/products',
+	});
+
+	const toastToggle = useCallback(() => {
+		setShowToast(true);
+	}, []);
 
 	const userData = () => {
-		setShowToast(true);
+		toastToggle();
 		localStorage.setItem('name', userName);
 		localStorage.setItem('email', email);
 		setEmail('');
 		setUserName('');
 	};
 
-	console.log(data);
+	const toastMarkup = showToast ? (
+		<Toast
+			content="UserDetails Update Succesfully"
+			onDismiss={() => setShowToast(false)}
+			duration={4000}
+		></Toast>
+	) : null;
 
 	return (
-		<>
+		<Frame>
 			<Page
 				title={
 					localStorage.getItem('name')
@@ -55,6 +59,12 @@ export default function HomePage() {
 							title="User Details"
 							sectioned
 							primaryFooterAction={{content: 'Submit', onAction: userData}}
+							secondaryFooterActions={[
+								{
+									content: 'User Details',
+									onAction: () => navigate('/pagename'),
+								},
+							]}
 						>
 							<FormLayout>
 								<TextField
@@ -83,6 +93,6 @@ export default function HomePage() {
 				</Layout>
 			</Page>
 			{toastMarkup}
-		</>
+		</Frame>
 	);
 }

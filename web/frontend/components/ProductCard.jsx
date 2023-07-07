@@ -5,12 +5,14 @@ import {
 	LegacyCard,
 	LegacyStack,
 	TextField,
-	Toast,
-	Frame,
 } from '@shopify/polaris';
 import {useCallback, useState} from 'react';
 import {Variant} from './index';
-import {useAuthenticatedFetch, useNavigate} from '@shopify/app-bridge-react';
+import {
+	useAuthenticatedFetch,
+	useNavigate,
+	Toast,
+} from '@shopify/app-bridge-react';
 
 export const ProductCard = (props) => {
 	const [title, setTitle] = useState(props.title);
@@ -35,7 +37,7 @@ export const ProductCard = (props) => {
 	) : null;
 
 	const updateHandler = async () => {
-		isUpdating(true);
+		setIsUpdating(true);
 		const updateProduct = {
 			id: props.id,
 			title,
@@ -71,7 +73,7 @@ export const ProductCard = (props) => {
 	};
 
 	return (
-		<Frame>
+		<>
 			<LegacyCard
 				sectioned
 				title="Products List"
@@ -124,6 +126,6 @@ export const ProductCard = (props) => {
 				</LegacyStack>
 			</LegacyCard>
 			{toastMarkup}
-		</Frame>
+		</>
 	);
 };
